@@ -1,0 +1,24 @@
+ # 一级缓存（SimpleExecutor）
+一级缓存是sqlSession级别的，如果sqlSession销毁colse或commit、update(insert)、rollback，缓存会清除.
+public void commit(boolean required) throws SQLException {
+    if (closed) {
+      throw new ExecutorException("Cannot commit, transaction is already closed");
+    }
+    clearLocalCache();
+    flushStatements();
+    if (required) {
+      transaction.commit();
+    }
+  }
+localCache
+localOutputParameterCache,如果statementType是存储过程（callable）则缓存存在这个关键字里面
+ # 二级缓存（CachingExecutor）
+在config文件中配置
+
+<!--开启二级缓存  -->
+<settings>
+    <setting name="cacheEnabled" value="true"/>
+</settings>
+
+默认不配置是true
+configuration.setCacheEnabled(booleanValueOf(props.getProperty("cacheEnabled"), true));
